@@ -213,6 +213,21 @@
                     // Masukkan file musik kalian bernama music.mp3 ke folder d:\Anniv
                     this.audio = new Audio('img/Afgan & Raisa - Percayalah.mp3'); 
                     this.audio.loop = true;
+
+                    // Memastikan musik diputar otomatis pada interaksi pertama (klik/sentuh) di mana saja
+                    const tryPlay = () => {
+                        if (!this.isPlaying) {
+                            this.audio.play().then(() => {
+                                this.isPlaying = true;
+                                document.removeEventListener('click', tryPlay);
+                                document.removeEventListener('touchstart', tryPlay);
+                            }).catch(() => {
+                                // Abaikan error jika masih dilarang browser
+                            });
+                        }
+                    };
+                    document.addEventListener('click', tryPlay);
+                    document.addEventListener('touchstart', tryPlay);
                 },
                 playMusic() {
                     if (!this.isPlaying) {
